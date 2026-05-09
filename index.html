@@ -209,6 +209,39 @@ document.getElementById("date").value = formattedDate;
         createdAt: new Date()
       });
 
+      
+const telegramToken = "8765775749:AAH3G-VeKKI6vg6Ee6wMMBXDzyK1XgVM3JY";
+
+const chatId = "872965841";
+
+const message =
+`🚕 Шинэ захиалга
+
+📍 Маршрут: ${route}
+
+📅 Өдөр: ${date}
+
+🕒 Цаг: ${time}
+
+👥 Хүний тоо: ${count}
+
+📞 Утас: ${phone}
+
+📝 Тайлбар: ${note}`;
+
+await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    chat_id: chatId,
+    text: message
+  })
+});
+
+
+
       document.getElementById("msg").innerHTML = "Амжилттай илгээгдлээ ✅";
 
       document.getElementById("route").value = "";

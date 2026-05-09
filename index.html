@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRA Taxi</title>
+
+  <style>
+    body{
+      font-family: Arial;
+      background:#111;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      margin:0;
+    }
+
+    .box{
+      background:#1e1e1e;
+      padding:25px;
+      border-radius:15px;
+      width:350px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      margin-top:10px;
+      border:none;
+      border-radius:8px;
+      font-size:16px;
+      box-sizing:border-box;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      margin-top:20px;
+      border:none;
+      border-radius:10px;
+      background:#00b894;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+    }
+
+    button:hover{
+      background:#00a383;
+    }
+
+    #msg{
+      margin-top:15px;
+      text-align:center;
+      color:#00ff99;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>BRA TAXI</h1>
+
+  <input id="driver" placeholder="Жолоочийн дугаар">
+
+  <input id="p1" placeholder="Зорчигч 1">
+  <input id="p2" placeholder="Зорчигч 2">
+  <input id="p3" placeholder="Зорчигч 3">
+  <input id="p4" placeholder="Зорчигч 4">
+
+  <button onclick="saveRide()">Илгээх</button>
+
+  <div id="msg"></div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBdzwJSNY1jBEA7qDaSiLFBIAJJEDRzo",
+  authDomain: "brataxi-a3231.firebaseapp.com",
+  projectId: "brataxi-a3231",
+  storageBucket: "brataxi-a3231.firebasestorage.app",
+  messagingSenderId: "1047098990409",
+  appId: "1:1047098990409:web:3646dbbd62ae56db4ac498"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.saveRide = async function () {
+
+  const driver = document.getElementById("driver").value;
+  const p1 = document.getElementById("p1").value;
+  const p2 = document.getElementById("p2").value;
+  const p3 = document.getElementById("p3").value;
+  const p4 = document.getElementById("p4").value;
+
+  try {
+
+    await addDoc(collection(db, "rides"), {
+      driver,
+      passengers:[p1,p2,p3,p4],
+      createdAt:new Date()
+    });
+
+    document.getElementById("msg").innerHTML =
+    "Амжилттай хадгаллаа ✅";
+
+  } catch (e) {
+
+    document.getElementById("msg").innerHTML =
+    "Алдаа гарлаа ❌";
+
+    console.log(e);
+  }
+}
+
+</script>
+
+</body>
+</html>
+```

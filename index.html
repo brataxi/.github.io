@@ -141,7 +141,16 @@
     </select>
 
     <label>Утасны дугаар</label>
-    <input id="phone" type="tel" placeholder="Жишээ: 99112233">
+    
+<input
+  id="phone"
+  type="tel"
+  placeholder="Жишээ: 99112233"
+  maxlength="8"
+  pattern="[0-9]{8}"
+>
+
+
 
     <label>Нэмэлт тайлбар</label>
     <textarea id="note" placeholder="Жишээ: 14:00 цагт 2 хүн хот явна"></textarea>
@@ -192,6 +201,15 @@ document.getElementById("date").value = formattedDate;
     const phone = document.getElementById("phone").value;
     const note = document.getElementById("note").value;
 
+
+if (!/^\d{8}$/.test(phone)) {
+  document.getElementById("msg").innerHTML =
+  "Утасны дугаар 8 оронтой байх ёстой ❗";
+  return;
+}
+
+
+    
     if (!route || !date || !time || !count || !phone) {
       document.getElementById("msg").innerHTML = "Бүх талбарыг бөглөнө үү ❗";
       return;
@@ -229,7 +247,7 @@ const message =
 
 📝 Тайлбар: ${note}`;
 
-await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+const telegramResponse = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -240,6 +258,15 @@ await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
   })
 });
 
+const telegramResult = await telegramResponse.json();
+
+console.log("Telegram result:", telegramResult);
+
+if (!telegramResult.ok) {
+  document.getElementById("msg").innerHTML =
+  "Telegram алдаа: " + telegramResult.description;
+  return;
+}
 
 
       document.getElementById("msg").innerHTML = "Амжилттай илгээгдлээ ✅";
